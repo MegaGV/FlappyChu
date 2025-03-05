@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://ch4nepbp2ep2l"]
+
+[ext_resource type="Script" uid="uid://cubc10cc8uot7" path="res://Scripts/pipe.gd" id="1_nq301"]
+[ext_resource type="Texture2D" uid="uid://cblsq0omi77gx" path="res://Assets/baseTileSet_temp.png" id="2_t5chl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yp7jp"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nq301"]
+size = Vector2(26, 68)
+
+[node name="Pipe" type="Node2D"]
+script = ExtResource("1_nq301")
+
+[node name="TopPipe" type="StaticBody2D" parent="."]
+position = Vector2(0, -50)
+
+[node name="Sprite2D" type="Sprite2D" parent="TopPipe"]
+texture = ExtResource("2_t5chl")
+flip_v = true
+region_enabled = true
+region_rect = Rect2(192, 64, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe"]
+shape = SubResource("RectangleShape2D_yp7jp")
+
+[node name="BottomPipe" type="StaticBody2D" parent="."]
+position = Vector2(0, 50)
+
+[node name="Sprite2D" type="Sprite2D" parent="BottomPipe"]
+texture = ExtResource("2_t5chl")
+region_enabled = true
+region_rect = Rect2(192, 64, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPipe"]
+shape = SubResource("RectangleShape2D_yp7jp")
+
+[node name="ScoreArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoreArea"]
+shape = SubResource("RectangleShape2D_nq301")

@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://ch4nepbp2ep2l"]
+
+[ext_resource type="Script" uid="uid://cubc10cc8uot7" path="res://Scripts/pipe.gd" id="1_nq301"]
+[ext_resource type="Texture2D" uid="uid://b33p813asco4c" path="res://Assets/pipe_cap.png" id="2_t5chl"]
+[ext_resource type="Texture2D" uid="uid://b521b44gwimee" path="res://Assets/pipe_cap2.png" id="2_x0thl"]
+[ext_resource type="Texture2D" uid="uid://cni1gj01hc4pa" path="res://Assets/pipe_body2.png" id="3_tetdo"]
+[ext_resource type="Texture2D" uid="uid://bgowjpdhaoaqk" path="res://Assets/pipe_body.png" id="3_yp7jp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x0thl"]
+size = Vector2(28, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tetdo"]
+size = Vector2(28, 16)
+
+[node name="Pipe" type="Node2D"]
+script = ExtResource("1_nq301")
+
+[node name="BottomPipe" type="StaticBody2D" parent="."]
+light_mask = 2
+collision_layer = 2
+
+[node name="Cap" type="Sprite2D" parent="BottomPipe"]
+position = Vector2(0, 8)
+texture = ExtResource("2_x0thl")
+
+[node name="Body" type="Sprite2D" parent="BottomPipe"]
+texture = ExtResource("3_tetdo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPipe"]
+shape = SubResource("RectangleShape2D_x0thl")
+
+[node name="TopPipe" type="StaticBody2D" parent="."]
+light_mask = 2
+collision_layer = 2
+
+[node name="Cap" type="Sprite2D" parent="TopPipe"]
+position = Vector2(0, -8)
+texture = ExtResource("2_t5chl")
+flip_v = true
+
+[node name="Body" type="Sprite2D" parent="TopPipe"]
+texture = ExtResource("3_yp7jp")
+flip_v = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPipe"]
+shape = SubResource("RectangleShape2D_tetdo")

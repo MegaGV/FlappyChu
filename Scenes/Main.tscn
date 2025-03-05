@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8ox7h0nb6ny7"]
+
+[ext_resource type="Script" uid="uid://c63s1pqjmf8nv" path="res://Scripts/main.gd" id="1_idj7w"]
+[ext_resource type="PackedScene" uid="uid://dic5l5rwupqkh" path="res://Scenes/Ground.tscn" id="3_rgh2o"]
+[ext_resource type="PackedScene" uid="uid://lg7u76qt54bd" path="res://Scenes/Bird.tscn" id="4_pbw6q"]
+[ext_resource type="PackedScene" uid="uid://chil024r2l1a1" path="res://Scenes/GameOver.tscn" id="6_v1gob"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_idj7w")
+
+[node name="Ground" parent="." instance=ExtResource("3_rgh2o")]
+position = Vector2(24, 847)
+
+[node name="Pipes" type="Node" parent="."]
+
+[node name="Bird" parent="." instance=ExtResource("4_pbw6q")]
+position = Vector2(97, 114)
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_right = 96.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 30
+text = "Score: 0"
+
+[node name="StartLabel" type="Label" parent="."]
+offset_left = 120.0
+offset_top = 427.0
+offset_right = 365.0
+offset_bottom = 482.0
+size_flags_horizontal = 0
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 40
+text = "Click to Start"
+horizontal_alignment = 1
+
+[node name="GameOver" parent="." instance=ExtResource("6_v1gob")]
+visible = false
+offset_left = 240.0
+offset_top = 427.0
+offset_right = 240.0
+offset_bottom = 427.0
