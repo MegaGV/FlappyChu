@@ -48,6 +48,11 @@ func jump():
     rotation = -0.5  # 向上旋转
 
 func _input(event):
+    # 处理鼠标点击
     if event is InputEventMouseButton:
         if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+            jump()
+    # 处理触摸屏幕
+    elif event is InputEventScreenTouch:
+        if event.pressed:
             jump()

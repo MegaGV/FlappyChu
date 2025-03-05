@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dijxdvpsvx2rw"
+path="res://.godot/imported/Speed Battle.ogg-1989d0df99f5f5545bcc106e03d59c5b.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/Speed Battle.ogg"
+dest_files=["res://.godot/imported/Speed Battle.ogg-1989d0df99f5f5545bcc106e03d59c5b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

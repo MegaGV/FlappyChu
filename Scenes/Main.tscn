@@ -1,12 +1,98 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8ox7h0nb6ny7"]
+[gd_scene load_steps=9 format=3 uid="uid://b8ox7h0nb6ny7"]
 
 [ext_resource type="Script" uid="uid://c63s1pqjmf8nv" path="res://Scripts/main.gd" id="1_idj7w"]
 [ext_resource type="PackedScene" uid="uid://dic5l5rwupqkh" path="res://Scenes/Ground.tscn" id="3_rgh2o"]
 [ext_resource type="PackedScene" uid="uid://lg7u76qt54bd" path="res://Scenes/Bird.tscn" id="4_pbw6q"]
+[ext_resource type="AudioStream" uid="uid://dijxdvpsvx2rw" path="res://Assets/Speed Battle.ogg" id="5_pbw6q"]
 [ext_resource type="PackedScene" uid="uid://chil024r2l1a1" path="res://Scenes/GameOver.tscn" id="6_v1gob"]
+
+[sub_resource type="Animation" id="Animation_v1gob"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_pbw6q"]
+resource_name = "fade_out"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -80.0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"stop"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jw32o"]
+_data = {
+&"RESET": SubResource("Animation_v1gob"),
+&"fade_out": SubResource("Animation_pbw6q")
+}
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_idj7w")
+
+[node name="ScoreLabel" type="Label" parent="."]
+z_index = 1
+offset_top = 7.0
+offset_right = 113.0
+offset_bottom = 49.0
+theme_override_font_sizes/font_size = 30
+text = "Score: 0"
+
+[node name="StartLabel" type="Label" parent="."]
+z_index = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 107.0
+offset_top = 400.0
+offset_right = 413.0
+offset_bottom = 469.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "Click to Start"
+
+[node name="GameOverScreen" parent="." instance=ExtResource("6_v1gob")]
+z_index = 1
+offset_left = 240.0
+offset_top = 427.0
+offset_right = 240.0
+offset_bottom = 427.0
+
+[node name="Ground2" parent="." instance=ExtResource("3_rgh2o")]
+position = Vector2(24, 8)
 
 [node name="Ground" parent="." instance=ExtResource("3_rgh2o")]
 position = Vector2(24, 847)
@@ -16,26 +102,11 @@ position = Vector2(24, 847)
 [node name="Bird" parent="." instance=ExtResource("4_pbw6q")]
 position = Vector2(97, 114)
 
-[node name="ScoreLabel" type="Label" parent="."]
-offset_right = 96.0
-offset_bottom = 42.0
-theme_override_font_sizes/font_size = 30
-text = "Score: 0"
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_pbw6q")
+parameters/looping = true
 
-[node name="StartLabel" type="Label" parent="."]
-offset_left = 120.0
-offset_top = 427.0
-offset_right = 365.0
-offset_bottom = 482.0
-size_flags_horizontal = 0
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 40
-text = "Click to Start"
-horizontal_alignment = 1
-
-[node name="GameOver" parent="." instance=ExtResource("6_v1gob")]
-visible = false
-offset_left = 240.0
-offset_top = 427.0
-offset_right = 240.0
-offset_bottom = 427.0
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AudioStreamPlayer2D"]
+libraries = {
+&"": SubResource("AnimationLibrary_jw32o")
+}

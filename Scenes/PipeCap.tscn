@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://o0xg5hi1tmxh"]
+
+[ext_resource type="Script" uid="uid://cg8jeaxasxjc6" path="res://Scripts/pipe_cap.gd" id="1_ilis3"]
+[ext_resource type="Texture2D" uid="uid://b33p813asco4c" path="res://Assets/pipe_cap.png" id="2_eqe5i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_87w1v"]
+size = Vector2(32, 16)
+
+[node name="PipeCap" type="StaticBody2D"]
+collision_layer = 2
+script = ExtResource("1_ilis3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_eqe5i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_87w1v")
