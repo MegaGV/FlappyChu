@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://blltr7tq0c75j"]
 
-[ext_resource type="Script" uid="uid://cubc10cc8uot7" path="res://Scripts/pipe.gd" id="1_nq301"]
+[ext_resource type="Script" uid="uid://cubc10cc8uot7" path="res://Scenes/Entities/Pipe/pipe.gd" id="1_nq301"]
 
 [node name="Pipe" type="Node2D"]
 z_index = -1

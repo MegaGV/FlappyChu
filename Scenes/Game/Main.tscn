@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://b8ox7h0nb6ny7"]
 
-[ext_resource type="Script" uid="uid://c63s1pqjmf8nv" path="res://Scripts/main.gd" id="1_idj7w"]
-[ext_resource type="PackedScene" uid="uid://dic5l5rwupqkh" path="res://Scenes/Ground.tscn" id="3_rgh2o"]
-[ext_resource type="PackedScene" uid="uid://lg7u76qt54bd" path="res://Scenes/Bird.tscn" id="4_pbw6q"]
-[ext_resource type="AudioStream" uid="uid://dijxdvpsvx2rw" path="res://Assets/Speed Battle.ogg" id="5_pbw6q"]
-[ext_resource type="PackedScene" uid="uid://chil024r2l1a1" path="res://Scenes/GameOver.tscn" id="6_v1gob"]
+[ext_resource type="Script" uid="uid://c63s1pqjmf8nv" path="res://Scenes/Game/main.gd" id="1_idj7w"]
+[ext_resource type="PackedScene" uid="uid://dic5l5rwupqkh" path="res://Scenes/Environment/Ground/Ground.tscn" id="3_rgh2o"]
+[ext_resource type="PackedScene" uid="uid://lg7u76qt54bd" path="res://Scenes/Entities/Bird/Bird.tscn" id="4_pbw6q"]
+[ext_resource type="AudioStream" uid="uid://dijxdvpsvx2rw" path="res://Assets/Audio/Speed Battle.ogg" id="5_pbw6q"]
+[ext_resource type="PackedScene" uid="uid://chil024r2l1a1" path="res://Scenes/UI/GameOver/GameOver.tscn" id="6_v1gob"]
 
 [sub_resource type="Animation" id="Animation_v1gob"]
 length = 0.001
@@ -83,6 +83,28 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
 text = "Click to Start"
+
+[node name="DifficultyLabel" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 40.0
+offset_top = 200.0
+offset_right = 440.0
+offset_bottom = 269.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 40
+text = "LEVEL UP!"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="GameOverScreen" parent="." instance=ExtResource("6_v1gob")]
 z_index = 1

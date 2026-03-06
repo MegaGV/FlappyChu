@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="FlappyChu"
+config/tags=PackedStringArray("mygame")
 run/main_scene="uid://b8ox7h0nb6ny7"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="uid://df3umubmhbfeb"

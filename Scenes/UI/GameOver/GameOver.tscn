@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://chil024r2l1a1"]
 
-[ext_resource type="Script" uid="uid://d4g0cfvnv150v" path="res://Scripts/gameover.gd" id="1_m5628"]
+[ext_resource type="Script" uid="uid://d4g0cfvnv150v" path="res://Scenes/UI/GameOver/gameover.gd" id="1_m5628"]
 
 [node name="GameOver" type="Control"]
 layout_mode = 3
@@ -50,6 +50,21 @@ offset_bottom = 62.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Your Score is :"
+
+[node name="HighScoreValue" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = 70.0
+offset_right = 0.5
+offset_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "High Score :"
 
 [node name="RestartButton" type="Button" parent="."]
 layout_mode = 1

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://lg7u76qt54bd"]
 
-[ext_resource type="Script" uid="uid://ds6vccvhasog4" path="res://Scripts/bird.gd" id="1_806kn"]
-[ext_resource type="Texture2D" uid="uid://cn04byi5jkvj3" path="res://Assets/Chu.png" id="1_rpcp7"]
+[ext_resource type="Script" uid="uid://ds6vccvhasog4" path="res://Scenes/Entities/Bird/bird.gd" id="1_806kn"]
+[ext_resource type="Texture2D" uid="uid://cn04byi5jkvj3" path="res://Assets/Graphics/Chu.png" id="1_rpcp7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rpcp7"]
 radius = 14.0

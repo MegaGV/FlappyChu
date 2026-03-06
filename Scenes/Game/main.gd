@@ -1,8 +1,8 @@
 extends Node2D
 
-var pipe_scene = preload("res://Scenes/Pipe.tscn")
-var pipe_cap_scene = preload("res://Scenes/PipeCap.tscn")
-var pipe_body_scene = preload("res://Scenes/PipeBody.tscn")
+var pipe_scene = preload("res://Scenes/Entities/Pipe/Pipe.tscn")
+var pipe_cap_scene = preload("res://Scenes/Entities/Pipe/PipeCap.tscn")
+var pipe_body_scene = preload("res://Scenes/Entities/Pipe/PipeBody.tscn")
 
 
 var pipe_timer = 0
@@ -10,6 +10,8 @@ var current_score = 0
 var current_level := 0
 var game_started = false
 var game_over = false
+var high_score = 0
+const SAVE_FILE_PATH = "user://highscore.save"
 
 # 基础难度参数
 var base_spawn_time := 1.5
@@ -34,12 +36,25 @@ const MAX_SPEED := 300.0
 
 @onready var bird: CharacterBody2D = $Bird
 @onready var game_over_screen: Control = $GameOverScreen
+@onready var difficulty_label: Label = $DifficultyLabel
 
 
 func _ready():
+    load_high_score()
     bird.game_over.connect(_on_game_over)
     game_over_screen.visible = false
     $ScoreLabel.text = "Score: 0"
+
+func load_high_score():
+    if FileAccess.file_exists(SAVE_FILE_PATH):
+        var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
+        high_score = file.get_32()
+        file.close()
+
+func save_high_score():
+    var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
+    file.store_32(high_score)
+    file.close()
 
 func _process(delta):
     if not game_started:
@@ -140,8 +155,15 @@ func _on_score_area_body_entered(body):
         
 func _on_game_over():
     game_over = true
+    
+    # 更新并保存最高分
+    if current_score > high_score:
+        high_score = current_score
+        save_high_score()
+        
     game_over_screen.visible = true
     game_over_screen.get_node("ScoreValue").text = "Your Score is: " + str(current_score)
+    game_over_screen.get_node("HighScoreValue").text = "High Score: " + str(high_score)
     $AudioStreamPlayer2D/AnimationPlayer.play("fade_out")
     
 func _on_restart_button_pressed():
@@ -186,3 +208,28 @@ func _apply_difficulty():
           " 参数: 间隔", pipe_spawn_time, 
           "s 间隙", gap_height, 
           "px 速度", speed)
+          
+    show_difficulty_up_effect()
+
+func show_difficulty_up_effect():
+    difficulty_label.text = "LEVEL UP!\nSpeed: " + str(speed)
+    
+    # 创建Tween动画
+    var tween = create_tween()
+    
+    # 初始状态
+    difficulty_label.modulate.a = 0
+    difficulty_label.scale = Vector2(0.5, 0.5)
+    difficulty_label.position.y = 200
+    
+    # 动画序列
+    tween.set_parallel(true)
+    tween.tween_property(difficulty_label, "modulate:a", 1.0, 0.3)
+    tween.tween_property(difficulty_label, "scale", Vector2(1.2, 1.2), 0.3).set_trans(Tween.TRANS_BOUNCE)
+    tween.tween_property(difficulty_label, "position:y", 150.0, 0.5).set_ease(Tween.EASE_OUT)
+    
+    tween.chain().tween_property(difficulty_label, "scale", Vector2(1.0, 1.0), 0.2)
+    
+    # 停留一会后淡出
+    tween.chain().tween_interval(1.0)
+    tween.chain().tween_property(difficulty_label, "modulate:a", 0.0, 0.5)
