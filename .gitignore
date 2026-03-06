@@ -4,3 +4,7 @@
 *.exe
 *.apk
 *.apk.*
+*.zip
+
+.vscode
+.idea
