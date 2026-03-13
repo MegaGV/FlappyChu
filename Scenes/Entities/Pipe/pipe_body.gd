@@ -1,5 +1,7 @@
 extends StaticBody2D
 
+class_name PipeBody
+
 # 获取管道体的高度
 func get_height():
     return $Sprite2D.texture.get_height() * $Sprite2D.scale.y

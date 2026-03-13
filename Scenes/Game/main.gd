@@ -1,17 +1,17 @@
 extends Node2D
 
-var pipe_scene = preload("res://Scenes/Entities/Pipe/Pipe.tscn")
-var pipe_cap_scene = preload("res://Scenes/Entities/Pipe/PipeCap.tscn")
-var pipe_body_scene = preload("res://Scenes/Entities/Pipe/PipeBody.tscn")
+var pipe_scene := preload("res://Scenes/Entities/Pipe/Pipe.tscn")
+var pipe_cap_scene := preload("res://Scenes/Entities/Pipe/PipeCap.tscn")
+var pipe_body_scene := preload("res://Scenes/Entities/Pipe/PipeBody.tscn")
 
 
-var pipe_timer = 0
-var current_score = 0
+var pipe_timer := 0.0
+var current_score := 0
 var current_level := 0
-var game_started = false
-var game_over = false
-var high_score = 0
-const SAVE_FILE_PATH = "user://highscore.save"
+var game_started := false
+var game_over := false
+var high_score := 0
+const SAVE_FILE_PATH := "user://highscore.save"
 
 # 基础难度参数
 var base_spawn_time := 1.5
@@ -19,9 +19,9 @@ var base_gap_height := 200.0
 var base_speed := 200.0
 
 # 当前难度参数
-var pipe_spawn_time = 1.5
-var gap_height = 200
-var speed = 200
+var pipe_spawn_time := 1.5
+var gap_height := 200.0
+var speed := 200.0
 
 # 难度曲线参数（可调整）
 var score_thresholds := [5, 15, 30, 50]  # 分数里程碑
@@ -47,12 +47,12 @@ func _ready():
 
 func load_high_score():
     if FileAccess.file_exists(SAVE_FILE_PATH):
-        var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
+        var file: FileAccess = FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
         high_score = file.get_32()
         file.close()
 
 func save_high_score():
-    var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
+    var file: FileAccess = FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
     file.store_32(high_score)
     file.close()
 
@@ -78,11 +78,11 @@ func start_game():
     $AudioStreamPlayer2D.play()
     
 func spawn_pipe():
-    var pipe = pipe_scene.instantiate()
-    var screen_size = get_viewport_rect().size
+    var pipe : Pipe = pipe_scene.instantiate()
+    var screen_size : Vector2 = get_viewport_rect().size
     
     # 确定间隙位置和大小
-    var gap_y = randf_range(screen_size.y * 0.3, screen_size.y * 0.7)
+    var gap_y: float = randf_range(screen_size.y * 0.3, screen_size.y * 0.7)
     
     # 设置管道初始位置
     pipe.position.x = screen_size.x + 100
@@ -103,12 +103,12 @@ func spawn_pipe():
     add_score_area(pipe, screen_size.y)
 
 # 创建管道
-func create_pipe_segment(pipe, gap_position: float, screen_size: Vector2, is_top: bool):
-    var pipes_node = pipe.get_node("TopPipes") if is_top else pipe.get_node("BottomPipes")
-    var body_height = 16  # 管道体高度
+func create_pipe_segment(pipe : Pipe, gap_position: float, screen_size: Vector2, is_top: bool):
+    var pipes_node : Node2D = pipe.get_node("TopPipes") if is_top else pipe.get_node("BottomPipes")
+    var body_height: float = 16.0  # 管道体高度
     
     # 创建管道帽
-    var cap = pipe_cap_scene.instantiate()
+    var cap : PipeCap = pipe_cap_scene.instantiate()
     if is_top:
         cap.is_top = true  # 顶部管道特有属性
         cap.position.y = gap_position - body_height / 2
@@ -127,7 +127,7 @@ func create_pipe_segment(pipe, gap_position: float, screen_size: Vector2, is_top
     
     # 创建管道体
     for i in range(num_bodies):
-        var body = pipe_body_scene.instantiate()
+        var body : PipeBody = pipe_body_scene.instantiate()
         if is_top:
             body.position.y = gap_position - cap.get_height() - body_height * (i + 0.5)
         else:
@@ -136,9 +136,9 @@ func create_pipe_segment(pipe, gap_position: float, screen_size: Vector2, is_top
 
 # 添加分数区域
 func add_score_area(pipe, screen_height):
-    var score_area = Area2D.new()
-    var collision = CollisionShape2D.new()
-    var shape = RectangleShape2D.new()
+    var score_area: Area2D = Area2D.new()
+    var collision: CollisionShape2D = CollisionShape2D.new()
+    var shape: RectangleShape2D = RectangleShape2D.new()
     
     shape.extents = Vector2(2, screen_height)
     collision.shape = shape
@@ -172,7 +172,7 @@ func _on_restart_button_pressed():
 
 func update_difficulty():
     # 检查是否达到新的难度等级
-    var new_level = 0
+    var new_level: int = 0
     for threshold in score_thresholds:
         if current_score >= threshold:
             new_level += 1
@@ -183,9 +183,9 @@ func update_difficulty():
 
 func _apply_difficulty():
     # 计算新参数（确保不低于最小值）
-    var new_spawn_time = base_spawn_time
-    var new_gap_height = base_gap_height
-    var new_speed = base_speed
+    var new_spawn_time: float = base_spawn_time
+    var new_gap_height: float = base_gap_height
+    var new_speed: float = base_speed
     
     for i in range(current_level):
         new_spawn_time -= spawn_time_reductions[i] if i < spawn_time_reductions.size() else 0
@@ -215,7 +215,7 @@ func show_difficulty_up_effect():
     difficulty_label.text = "LEVEL UP!\nSpeed: " + str(speed)
     
     # 创建Tween动画
-    var tween = create_tween()
+    var tween: Tween = create_tween()
     
     # 初始状态
     difficulty_label.modulate.a = 0

@@ -1,7 +1,9 @@
 extends StaticBody2D
 
+class_name PipeCap
+
 # 是否为顶部管道的标志
-var is_top = false
+var is_top := false
 
 func _ready():
     # 如果是顶部管道，翻转精灵

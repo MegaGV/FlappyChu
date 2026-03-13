@@ -3,11 +3,11 @@ extends CharacterBody2D
 
 signal game_over
 
-var gravity = 1000
-var jump_force = -400
-var rotation_speed = 3
-var is_game_started = false
-var is_game_over = false
+var gravity := 1000
+var jump_force := -400
+var rotation_speed := 3
+var is_game_started := false
+var is_game_over := false
 
 func _ready():
     velocity = Vector2.ZERO
@@ -28,7 +28,7 @@ func _physics_process(delta):
     # 只在游戏未结束时检测碰撞
     if not is_game_over:
         for i in get_slide_collision_count():
-            var collision = get_slide_collision(i)
+            var collision: KinematicCollision2D = get_slide_collision(i)
             if collision:
                 emit_signal("game_over")
                 is_game_over = true
@@ -56,3 +56,7 @@ func _input(event):
     elif event is InputEventScreenTouch:
         if event.pressed:
             jump()
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+    queue_free()
