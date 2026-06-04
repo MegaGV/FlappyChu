@@ -7,7 +7,7 @@ var pipe_body_scene := preload("res://Scenes/Entities/Pipe/PipeBody.tscn")
 
 var pipe_timer := 0.0
 var current_score := 0
-var current_level := 0
+var current_level := 1
 var game_started := false
 var game_over := false
 var high_score := 0
@@ -23,16 +23,14 @@ var pipe_spawn_time := 1.5
 var gap_height := 200.0
 var speed := 200.0
 
-# 难度曲线参数（可调整）
-var score_thresholds := [5, 15, 30, 50]  # 分数里程碑
-var spawn_time_reductions := [0.2, 0.15, 0.1, 0.05]  # 每次减少的秒数
-var gap_height_reductions := [15, 10, 8, 5]  # 每次减少的像素
-var speed_increases := [20, 15, 10, 5]  # 每次增加的速度
-
 # 最低限制（确保游戏有解）
 const MIN_SPAWN_TIME := 0.8
 const MIN_GAP_HEIGHT := 120.0  # 30(玩家) * 3 + 余量
 const MAX_SPEED := 300.0
+
+# 无限难度曲线参数
+const DIFFICULTY_RAMP_SCORE := 80.0
+const LEVEL_SCORE_STEP := 10
 
 @onready var bird: CharacterBody2D = $Bird
 @onready var game_over_screen: Control = $GameOverScreen
@@ -171,31 +169,25 @@ func _on_restart_button_pressed():
     get_tree().reload_current_scene()
 
 func update_difficulty():
-    # 检查是否达到新的难度等级
-    var new_level: int = 0
-    for threshold in score_thresholds:
-        if current_score >= threshold:
-            new_level += 1
-    
-    if new_level != current_level:
-        current_level = new_level
-        _apply_difficulty()
+    var new_level: int = _get_level_for_score(current_score)
+    var leveled_up := new_level != current_level
 
-func _apply_difficulty():
-    # 计算新参数（确保不低于最小值）
-    var new_spawn_time: float = base_spawn_time
-    var new_gap_height: float = base_gap_height
-    var new_speed: float = base_speed
-    
-    for i in range(current_level):
-        new_spawn_time -= spawn_time_reductions[i] if i < spawn_time_reductions.size() else 0
-        new_gap_height -= gap_height_reductions[i] if i < gap_height_reductions.size() else 0
-        new_speed += speed_increases[i] if i < speed_increases.size() else 0
+    current_level = new_level
+    _apply_difficulty(leveled_up)
+
+func _get_difficulty_progress() -> float:
+    return clampf(1.0 - exp(-float(current_score) / DIFFICULTY_RAMP_SCORE), 0.0, 1.0)
+
+func _get_level_for_score(score: int) -> int:
+    return int(score / LEVEL_SCORE_STEP) + 1
+
+func _apply_difficulty(show_level_up: bool = false):
+    var progress := _get_difficulty_progress()
     
     # 应用限制
-    pipe_spawn_time = max(new_spawn_time, MIN_SPAWN_TIME)
-    gap_height = max(new_gap_height, MIN_GAP_HEIGHT)
-    speed = min(new_speed, MAX_SPEED)
+    pipe_spawn_time = max(lerpf(base_spawn_time, MIN_SPAWN_TIME, progress), MIN_SPAWN_TIME)
+    gap_height = max(lerpf(base_gap_height, MIN_GAP_HEIGHT, progress), MIN_GAP_HEIGHT)
+    speed = min(lerpf(base_speed, MAX_SPEED, progress), MAX_SPEED)
     
     for pipe in $Pipes.get_children():
         pipe.speed = speed
@@ -203,16 +195,16 @@ func _apply_difficulty():
     $Ground.speed = speed
     $Ground2.speed = speed
     
-    print("当前分数 ", current_score,
-          " 难度提升至Lv", current_level+1, 
-          " 参数: 间隔", pipe_spawn_time, 
-          "s 间隙", gap_height, 
-          "px 速度", speed)
-          
-    show_difficulty_up_effect()
+    if show_level_up:
+        print("当前分数 ", current_score,
+              " 难度提升至Lv", current_level,
+              " 参数: 间隔", pipe_spawn_time,
+              "s 间隙", gap_height,
+              "px 速度", speed)
+        show_difficulty_up_effect()
 
 func show_difficulty_up_effect():
-    difficulty_label.text = "LEVEL UP!\nSpeed: " + str(speed)
+    difficulty_label.text = "LEVEL UP!\nLv" + str(current_level) + " Speed: " + str(int(speed))
     
     # 创建Tween动画
     var tween: Tween = create_tween()
